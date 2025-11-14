@@ -1,0 +1,12 @@
+[
+    {
+      "origin": [
+        "http://localhost:5173",
+        "https://firebasestorage.googleapis.com",
+        "https://firebasestorage.app"
+      ],
+      "method": ["GET", "POST", "PUT", "DELETE", "HEAD"],
+      "maxAgeSeconds": 3600,
+      "responseHeader": ["Content-Type", "x-goog-meta-*"]
+    }
+  ]
