@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import { auth } from "../firebaseConfig";
 import { onAuthStateChanged } from "firebase/auth";
-import LikeButton from "../components/likeButton.";
+import LikeButton from "../components/likeButton";
 import FavoriteButton from "../components/FavoriteButton";
 import { useNavigate } from "react-router-dom";
 

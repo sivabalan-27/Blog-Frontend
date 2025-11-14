@@ -7,7 +7,7 @@ import Navbar from './components/Navbar';
 import EditProject from "./pages/EditProject";
 import MyProjects from "./pages/MyProjects";
 import ProjectDetails from "./pages/ProjectDetails";
-import Favorites from './pages/favorites';
+import Favorites from './pages/favorites.jsx';
 import Profile from "./pages/Profile";
 import EditProfile from "./pages/EditProfile";
 

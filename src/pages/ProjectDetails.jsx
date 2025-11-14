@@ -3,7 +3,7 @@ import axios from "axios";
 import { useParams, useNavigate } from "react-router-dom";
 import { auth } from "../firebaseConfig";
 import { onAuthStateChanged } from "firebase/auth";
-import LikeButton from "../components/likeButton.";
+import LikeButton from "../components/likeButton";
 import FavoriteButton from "../components/FavoriteButton";
 import RatingStars from "../components/RatingStars";
 import Comments from "../components/Comments";

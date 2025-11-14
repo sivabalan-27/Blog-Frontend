@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
-import LikeButton from "../components/likeButton.";
+import LikeButton from "../components/likeButton";
 import FavoriteButton from "../components/FavoriteButton";
 import RatingStars from "../components/RatingStars";
 import { auth } from "../firebaseConfig";

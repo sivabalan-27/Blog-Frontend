@@ -3,7 +3,7 @@ import axios from "axios";
 import { auth } from "../firebaseConfig";
 import { onAuthStateChanged } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
-import LikeButton from "../components/likeButton.";
+import LikeButton from "../components/likeButton";
 
 function MyProjects() {
   const [projects, setProjects] = useState([]);
