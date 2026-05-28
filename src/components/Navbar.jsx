@@ -59,7 +59,7 @@ const Navbar = () => {
           onClick={() => navigate("/")}
           className="font-bold text-xl cursor-pointer hover:text-blue-400 transition"
         >
-          Peer Project Hub
+          ShowCase
         </h1>
 
         {/* Hamburger Button — Mobile Only */}
