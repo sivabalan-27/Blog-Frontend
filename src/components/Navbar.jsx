@@ -3,19 +3,22 @@ import { auth } from "../firebaseConfig";
 import { useEffect, useState } from "react";
 import { signOut, onAuthStateChanged } from "firebase/auth";
 import axios from "axios";
-import { Menu, X } from "lucide-react"; // hamburger icons
+import { Menu, X } from "lucide-react";
 
 const Navbar = () => {
   const [user, setUser] = useState(null);
-  const [open, setOpen] = useState(false); // mobile menu toggle
+  const [open, setOpen] = useState(false);
+
   const navigate = useNavigate();
 
-  const API_BASE = import.meta.env.VITE_API_URL || "http://localhost:3000";
+  const API_BASE =
+    import.meta.env.VITE_API_URL || "http://localhost:3000";
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
       setUser(currentUser);
     });
+
     return () => unsubscribe();
   }, []);
 
@@ -24,8 +27,11 @@ const Navbar = () => {
 
     try {
       const token = await user.getIdToken(true);
+
       const res = await axios.get(`${API_BASE}/api/users/me`, {
-        headers: { Authorization: `Bearer ${token}` },
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
       });
 
       const profile = res.data.profile;
@@ -51,28 +57,46 @@ const Navbar = () => {
   };
 
   return (
-    <nav className="bg-black/85 text-white p-4 shadow-lg border-b border-[#1f1f1f]">
-      <div className="max-w-7xl mx-auto flex justify-between items-center">
-        
-        {/* Logo */}
-        <h1
-          onClick={() => navigate("/")}
-          className="font-bold text-xl cursor-pointer hover:text-blue-400 transition"
-        >
-          ShowCase
-        </h1>
+    <nav className="sticky top-0 z-50 bg-[#050505]/90 backdrop-blur-xl border-b border-white/10 shadow-[0_0_30px_rgba(109,0,26,0.08)]">
+      
+      <div className="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
 
-        {/* Hamburger Button — Mobile Only */}
+        {/* Logo */}
+        {/* <h1
+          onClick={() => navigate("/")}
+          className="text-2xl font-bold tracking-tight cursor-pointer "
+        >
+          Show<span className="text-[#8B0023]">Case</span>
+        </h1> */}
+        <h1
+  onClick={() => navigate("/")}
+  className="
+    text-4xl
+    font-black
+    tracking-tight
+    cursor-pointer
+    select-none
+  "
+>
+  <span className="text-white">Show</span>
+  <span className="text-[#8B0023]">Case</span>
+</h1>
+
+        {/* Mobile Menu Button */}
         <button
-          className="md:hidden p-2"
+          className="md:hidden text-white hover:text-[#ff4d6d] transition duration-300"
           onClick={() => setOpen(!open)}
         >
-          {open ? <X size={26} /> : <Menu size={26} />}
+          {open ? <X size={28} /> : <Menu size={28} />}
         </button>
 
         {/* Desktop Menu */}
-        <div className="hidden md:flex items-center gap-6">
-          <Link to="/" className="hover:text-blue-400 transition">
+        <div className="hidden md:flex items-center gap-8">
+
+          <Link
+            to="/"
+            className="text-gray-300 hover:text-[#ff4d6d] transition duration-300"
+          >
             Home
           </Link>
 
@@ -80,23 +104,29 @@ const Navbar = () => {
             <>
               <button
                 onClick={handleAddProject}
-                className="hover:text-blue-400 transition"
+                className="text-gray-300 hover:text-[#ff4d6d] transition duration-300"
               >
                 Add Project
               </button>
 
               <Link
                 to="/my-projects"
-                className="hover:text-blue-400 transition"
+                className="text-gray-300 hover:text-[#ff4d6d] transition duration-300"
               >
                 My Projects
               </Link>
 
-              <Link to="/favorites" className="hover:text-blue-400 transition">
+              <Link
+                to="/favorites"
+                className="text-gray-300 hover:text-[#ff4d6d] transition duration-300"
+              >
                 Favorites
               </Link>
 
-              <Link to="/profile" className="hover:text-blue-400 transition">
+              <Link
+                to="/profile"
+                className="text-gray-300 hover:text-[#ff4d6d] transition duration-300"
+              >
                 Profile
               </Link>
             </>
@@ -105,14 +135,14 @@ const Navbar = () => {
           {user ? (
             <button
               onClick={handleLogout}
-              className="bg-red-600 px-3 py-1 rounded hover:bg-red-700 transition-all"
+              className="bg-[#6D001A] hover:bg-[#8B0023] px-4 py-2 rounded-xl text-white transition-all duration-300 shadow-lg hover:shadow-[0_0_20px_rgba(109,0,26,0.4)]"
             >
               Logout
             </button>
           ) : (
             <Link
               to="/login"
-              className="bg-blue-600 px-3 py-1 rounded hover:bg-blue-700 transition-all"
+              className="bg-[#6D001A] hover:bg-[#8B0023] px-4 py-2 rounded-xl text-white transition-all duration-300 shadow-lg hover:shadow-[0_0_20px_rgba(109,0,26,0.4)]"
             >
               Login
             </Link>
@@ -120,75 +150,77 @@ const Navbar = () => {
         </div>
       </div>
 
-      {/* Mobile Dropdown Menu */}
+      {/* Mobile Menu */}
       {open && (
-        <div className="md:hidden mt-4 flex flex-col bg-[#181818] border border-[#222] rounded-lg p-4 space-y-3 animate-slideDown">
+        <div className="md:hidden px-6 pb-6">
+          <div className="bg-[#111111]/95 backdrop-blur-xl border border-white/10 rounded-2xl p-5 flex flex-col gap-4 shadow-2xl">
 
-          <Link
-            to="/"
-            className="hover:text-blue-400 transition"
-            onClick={() => setOpen(false)}
-          >
-            Home
-          </Link>
+            <Link
+              to="/"
+              onClick={() => setOpen(false)}
+              className="text-gray-300 hover:text-[#ff4d6d] transition duration-300"
+            >
+              Home
+            </Link>
 
-          {user && (
-            <>
+            {user && (
+              <>
+                <button
+                  onClick={() => {
+                    setOpen(false);
+                    handleAddProject();
+                  }}
+                  className="text-left text-gray-300 hover:text-[#ff4d6d] transition duration-300"
+                >
+                  Add Project
+                </button>
+
+                <Link
+                  to="/my-projects"
+                  onClick={() => setOpen(false)}
+                  className="text-gray-300 hover:text-[#ff4d6d] transition duration-300"
+                >
+                  My Projects
+                </Link>
+
+                <Link
+                  to="/favorites"
+                  onClick={() => setOpen(false)}
+                  className="text-gray-300 hover:text-[#ff4d6d] transition duration-300"
+                >
+                  Favorites
+                </Link>
+
+                <Link
+                  to="/profile"
+                  onClick={() => setOpen(false)}
+                  className="text-gray-300 hover:text-[#ff4d6d] transition duration-300"
+                >
+                  Profile
+                </Link>
+              </>
+            )}
+
+            {user ? (
               <button
                 onClick={() => {
                   setOpen(false);
-                  handleAddProject();
+                  handleLogout();
                 }}
-                className="text-left hover:text-blue-400 transition"
+                className="bg-[#6D001A] hover:bg-[#8B0023] px-4 py-2 rounded-xl text-white transition-all duration-300"
               >
-                Add Project
+                Logout
               </button>
-
+            ) : (
               <Link
-                to="/my-projects"
+                to="/login"
                 onClick={() => setOpen(false)}
-                className="hover:text-blue-400 transition"
+                className="bg-[#6D001A] hover:bg-[#8B0023] px-4 py-2 rounded-xl text-white text-center transition-all duration-300"
               >
-                My Projects
+                Login
               </Link>
-
-              <Link
-                to="/favorites"
-                onClick={() => setOpen(false)}
-                className="hover:text-blue-400 transition"
-              >
-                Favorites
-              </Link>
-
-              <Link
-                to="/profile"
-                onClick={() => setOpen(false)}
-                className="hover:text-blue-400 transition"
-              >
-                Profile
-              </Link>
-            </>
-          )}
-
-          {user ? (
-            <button
-              onClick={() => {
-                setOpen(false);
-                handleLogout();
-              }}
-              className="bg-red-600 px-3 py-1 rounded hover:bg-red-700 transition-all"
-            >
-              Logout
-            </button>
-          ) : (
-            <Link
-              to="/login"
-              onClick={() => setOpen(false)}
-              className="bg-blue-600 px-3 py-1 rounded hover:bg-blue-700 transition-all"
-            >
-              Login
-            </Link>
-          )}
+            )}
+          </div>
         </div>
       )}
     </nav>
@@ -196,3 +228,4 @@ const Navbar = () => {
 };
 
 export default Navbar;
+

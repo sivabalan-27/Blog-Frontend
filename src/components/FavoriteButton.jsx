@@ -3,24 +3,34 @@ import axios from "axios";
 import { auth } from "../firebaseConfig";
 import { onAuthStateChanged } from "firebase/auth";
 
-function FavoriteButton({ projectId, initiallyFavorited = false }) {
-  const [favorited, setFavorited] = useState(initiallyFavorited);
+function FavoriteButton({
+  projectId,
+  initiallyFavorited = false,
+}) {
+  const [favorited, setFavorited] = useState(
+    initiallyFavorited
+  );
+
   const [loading, setLoading] = useState(false);
   const [user, setUser] = useState(null);
 
-  const API_BASE = import.meta.env.VITE_API_URL || "http://localhost:3000";
+  const API_BASE =
+    import.meta.env.VITE_API_URL || "http://localhost:3000";
 
-  // 👤 Track Firebase user
+  // Track Firebase User
   useEffect(() => {
-    const unsub = onAuthStateChanged(auth, (currentUser) => {
-      setUser(currentUser);
-    });
+    const unsub = onAuthStateChanged(
+      auth,
+      (currentUser) => {
+        setUser(currentUser);
+      }
+    );
+
     return () => unsub();
   }, []);
 
-  // ⭐ Toggle favorite
+  // Toggle Favorite
   const handleFavorite = async (e) => {
-    // 🛑 Prevent click from opening project details
     e.stopPropagation();
 
     if (!user) {
@@ -29,20 +39,28 @@ function FavoriteButton({ projectId, initiallyFavorited = false }) {
     }
 
     if (loading) return;
+
     setLoading(true);
 
     try {
       const token = await user.getIdToken();
+
       const res = await axios.post(
         `${API_BASE}/api/projects/${projectId}/favorite`,
         {},
-        { headers: { Authorization: `Bearer ${token}` } }
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
       );
 
-      // ✅ Toggle based on server response
       setFavorited(res.data.favorited);
     } catch (err) {
-      console.error("🔥 Error toggling favorite:", err);
+      console.error(
+        "🔥 Error toggling favorite:",
+        err
+      );
     } finally {
       setLoading(false);
     }
@@ -52,17 +70,44 @@ function FavoriteButton({ projectId, initiallyFavorited = false }) {
     <button
       onClick={handleFavorite}
       disabled={loading}
-      className={`px-3 py-1 rounded-md flex items-center gap-1 transition-all duration-200 ${
-        favorited
-          ? "bg-yellow-500 hover:bg-yellow-600 text-white"
-          : "bg-gray-200 hover:bg-gray-300 text-gray-800"
-      }`}
+      className={`
+        px-4 py-2 rounded-xl
+        flex items-center gap-2
+        text-sm font-medium
+        border
+        transition-all duration-300
+        ${
+          favorited
+            ? `
+              bg-[#6D001A]
+              border-[#8B0023]
+              text-white
+              hover:bg-[#8B0023]
+              hover:shadow-[0_0_20px_rgba(109,0,26,0.45)]
+            `
+            : `
+              bg-[#111111]
+              border-white/10
+              text-gray-300
+              hover:border-[#6D001A]
+              hover:bg-[#1a1a1a]
+              hover:text-white
+              hover:shadow-[0_0_18px_rgba(109,0,26,0.25)]
+            `
+        }
+      `}
     >
-      {loading
-        ? "Processing..."
-        : favorited
-        ? "★ Favorited"
-        : "☆ Favorite"}
+      {loading ? (
+        "Processing..."
+      ) : favorited ? (
+        <>
+          ⭐ <span>Favorited</span>
+        </>
+      ) : (
+        <>
+          ☆ <span>Favorite</span>
+        </>
+      )}
     </button>
   );
 }
